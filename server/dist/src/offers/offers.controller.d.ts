@@ -1,0 +1,82 @@
+import { OffersService } from './offers.service';
+import { CreateOfferDto, UpdateOfferDto } from './dto/offers.dto';
+export declare class OffersController {
+    private readonly offersService;
+    constructor(offersService: OffersService);
+    getOffers(businessId: string, userId: string): Promise<{
+        isExpired: boolean;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        businessId: string;
+        isActive: boolean;
+        imageUrl: string | null;
+        title: string;
+        discountType: string;
+        discountAmount: number | null;
+        promoCode: string | null;
+        startDate: Date;
+        endDate: Date;
+    }[]>;
+    createOffer(businessId: string, userId: string, dto: CreateOfferDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        businessId: string;
+        isActive: boolean;
+        imageUrl: string | null;
+        title: string;
+        discountType: string;
+        discountAmount: number | null;
+        promoCode: string | null;
+        startDate: Date;
+        endDate: Date;
+    }>;
+    updateOffer(businessId: string, id: string, userId: string, dto: UpdateOfferDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        businessId: string;
+        isActive: boolean;
+        imageUrl: string | null;
+        title: string;
+        discountType: string;
+        discountAmount: number | null;
+        promoCode: string | null;
+        startDate: Date;
+        endDate: Date;
+    }>;
+    toggleActive(businessId: string, id: string, userId: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        businessId: string;
+        isActive: boolean;
+        imageUrl: string | null;
+        title: string;
+        discountType: string;
+        discountAmount: number | null;
+        promoCode: string | null;
+        startDate: Date;
+        endDate: Date;
+    }>;
+    deleteOffer(businessId: string, id: string, userId: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        businessId: string;
+        isActive: boolean;
+        imageUrl: string | null;
+        title: string;
+        discountType: string;
+        discountAmount: number | null;
+        promoCode: string | null;
+        startDate: Date;
+        endDate: Date;
+    }>;
+}

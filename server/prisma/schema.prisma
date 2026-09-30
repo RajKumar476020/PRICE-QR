@@ -1,0 +1,152 @@
+// Prisma schema for QR-based Digital Business Profile & Price List application
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String       @id @default(cuid())
+  email        String       @unique
+  passwordHash String
+  name         String
+  role         String       @default("OWNER") // "OWNER" | "ADMIN"
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  businesses   Business[]
+}
+
+model Business {
+  id              String            @id @default(cuid())
+  publicId        String            @unique // e.g. "BUS_8F72K9"
+  name            String
+  category        String            // "Restaurant" | "Cafe" | "Bakery" | "Sweet shop" | "Grocery store" | "Salon" | "Retail" | "Service"
+  tagline         String?
+  description     String?
+  logoUrl         String?
+  coverUrl        String?
+  phone           String?
+  whatsapp        String?
+  email           String?
+  website         String?
+  address         String?
+  city            String?
+  googleMapsUrl   String?
+  instagram       String?
+  facebook        String?
+  currency        String            @default("₹")
+  status          String            @default("ACTIVE") // "ACTIVE" | "SUSPENDED"
+  ownerId         String
+  owner           User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  hours           BusinessHours[]
+  categories      Category[]
+  products        Product[]
+  offers          Offer[]
+  qrCode          QRCode?
+  analyticsEvents AnalyticsEvent[]
+  subscription    Subscription?
+}
+
+model BusinessHours {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  dayOfWeek  Int      // 0 = Sunday, 1 = Monday, ... 6 = Saturday
+  dayName    String   // "Monday", "Tuesday", etc.
+  openTime   String   @default("09:00") // "09:00"
+  closeTime  String   @default("22:00") // "22:00"
+  isClosed   Boolean  @default(false)
+
+  @@unique([businessId, dayOfWeek])
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  businessId  String
+  business    Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  sortOrder   Int       @default(0)
+  isActive    Boolean   @default(true)
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Product {
+  id            String    @id @default(cuid())
+  businessId    String
+  business      Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  categoryId    String
+  category      Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name          String
+  description   String?
+  price         Float
+  discountPrice Float?
+  imageUrl      String?
+  isAvailable   Boolean   @default(true)
+  isFeatured    Boolean   @default(false)
+  dietaryType   String?   @default("NONE") // "VEG" | "NON_VEG" | "VEGAN" | "NONE"
+  sortOrder     Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Offer {
+  id             String    @id @default(cuid())
+  businessId     String
+  business       Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  title          String
+  description    String?
+  discountType   String    // "PERCENTAGE" | "FIXED" | "PROMO"
+  discountAmount Float?
+  promoCode      String?
+  imageUrl       String?
+  startDate      DateTime
+  endDate        DateTime
+  isActive       Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model QRCode {
+  id            String   @id @default(cuid())
+  businessId    String   @unique
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  targetUrl     String
+  qrStyle       String?  // JSON config for colors, logo, shape
+  downloadCount Int      @default(0)
+  scansCount    Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model AnalyticsEvent {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  eventType  String   // "QR_SCAN" | "PAGE_VIEW" | "PRODUCT_VIEW" | "CATEGORY_CLICK" | "OFFER_VIEW" | "CONTACT_CLICK"
+  metadata   String?  // JSON string
+  ipHash     String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+}
+
+model Subscription {
+  id         String    @id @default(cuid())
+  businessId String    @unique
+  business   Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  planName   String    @default("PRO") // "FREE" | "PRO" | "ENTERPRISE"
+  status     String    @default("ACTIVE")
+  expiresAt  DateTime?
+  features   String    @default("[\"unlimited_products\",\"analytics\",\"custom_qr\",\"unlimited_offers\"]")
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
