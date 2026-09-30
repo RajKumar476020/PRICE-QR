@@ -15,6 +15,10 @@ async function bootstrap() {
     app.use('/uploads', express.static(uploadDir));
     app.use('/api/uploads', express.static(uploadDir));
     app.setGlobalPrefix('api');
+    const httpAdapter = app.getHttpAdapter();
+    httpAdapter.get('/api/health', (req, res) => {
+        res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+    });
     app.enableCors({
         origin: true,
         credentials: true,
@@ -27,8 +31,8 @@ async function bootstrap() {
         forbidNonWhitelisted: false,
     }));
     const port = process.env.PORT || 4000;
-    await app.listen(port);
-    console.log(`🚀 PriceQR Backend API is running on: http://localhost:${port}/api`);
+    await app.listen(port, '0.0.0.0');
+    console.log(`🚀 PriceQR Backend API is running on: http://0.0.0.0:${port}/api`);
     console.log(`📁 Static uploads served from: ${uploadDir}`);
 }
 bootstrap();

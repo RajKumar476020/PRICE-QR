@@ -20,8 +20,14 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
+  // Health check endpoint for Railway
+  const httpAdapter = app.getHttpAdapter();
+  httpAdapter.get('/api/health', (req: any, res: any) => {
+    res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
+
   app.enableCors({
-    origin: true, // Allow frontend during development and production
+    origin: true,
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept, Authorization',
@@ -36,8 +42,8 @@ async function bootstrap() {
   );
 
   const port = process.env.PORT || 4000;
-  await app.listen(port);
-  console.log(`🚀 PriceQR Backend API is running on: http://localhost:${port}/api`);
+  await app.listen(port, '0.0.0.0');
+  console.log(`🚀 PriceQR Backend API is running on: http://0.0.0.0:${port}/api`);
   console.log(`📁 Static uploads served from: ${uploadDir}`);
 }
 
