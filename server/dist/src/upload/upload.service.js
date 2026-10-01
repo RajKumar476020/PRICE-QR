@@ -5,32 +5,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UploadService = void 0;
 const common_1 = require("@nestjs/common");
-const fs = require("fs");
-const path = require("path");
+const blob_1 = require("@vercel/blob");
 let UploadService = class UploadService {
-    constructor() {
-        this.uploadDir = path.resolve(process.cwd(), 'uploads');
-        this.ensureUploadDir();
-    }
-    ensureUploadDir() {
-        if (!fs.existsSync(this.uploadDir)) {
-            fs.mkdirSync(this.uploadDir, { recursive: true });
-        }
-    }
-    processUploadedFile(file) {
+    async processUploadedFile(file) {
         if (!file) {
             throw new common_1.BadRequestException('No file provided for upload.');
         }
-        const relativeUrl = `/uploads/${file.filename}`;
+        const token = process.env.BLOB_READ_WRITE_TOKEN;
+        if (!token) {
+            const relativeUrl = `/uploads/${file.filename ?? file.originalname}`;
+            return {
+                url: relativeUrl,
+                filename: file.originalname,
+                originalName: file.originalname,
+                size: file.size,
+                mimetype: file.mimetype,
+            };
+        }
+        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+        const ext = file.originalname.split('.').pop()?.toLowerCase() || 'jpg';
+        const blobFilename = `uploads/img-${uniqueSuffix}.${ext}`;
+        const blob = await (0, blob_1.put)(blobFilename, file.buffer, {
+            access: 'public',
+            token,
+            contentType: file.mimetype,
+        });
         return {
-            url: relativeUrl,
-            filename: file.filename,
+            url: blob.url,
+            filename: blobFilename,
             originalName: file.originalname,
             size: file.size,
             mimetype: file.mimetype,
@@ -39,7 +44,6 @@ let UploadService = class UploadService {
 };
 exports.UploadService = UploadService;
 exports.UploadService = UploadService = __decorate([
-    (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [])
+    (0, common_1.Injectable)()
 ], UploadService);
 //# sourceMappingURL=upload.service.js.map

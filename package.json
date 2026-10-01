@@ -12,7 +12,8 @@
     "build": "npm run build:server && npm run build:client",
     "prisma:seed": "npm run prisma:seed --prefix server",
     "prisma:push": "npm run prisma:push --prefix server",
-    "start": "node server/dist/main"
+    "start": "node server/dist/main",
+    "vercel:build": "cd server && npm install && npm run build && cd ../client && npm install && npm run build"
   },
   "keywords": [
     "qr-menu",
@@ -23,5 +24,9 @@
     "prisma"
   ],
   "author": "Antigravity Engineering",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@vercel/node": "^3.2.29",
+    "typescript": "^5.9.3"
+  }
 }

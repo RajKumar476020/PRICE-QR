@@ -16,18 +16,12 @@ exports.UploadController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const multer_1 = require("multer");
-const path = require("path");
-const fs = require("fs");
 const upload_service_1 = require("./upload.service");
-const uploadDir = path.resolve(process.cwd(), 'uploads');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
 let UploadController = class UploadController {
     constructor(uploadService) {
         this.uploadService = uploadService;
     }
-    uploadImage(file) {
+    async uploadImage(file) {
         return this.uploadService.processUploadedFile(file);
     }
 };
@@ -35,20 +29,11 @@ exports.UploadController = UploadController;
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
-        storage: (0, multer_1.diskStorage)({
-            destination: (req, file, cb) => {
-                cb(null, uploadDir);
-            },
-            filename: (req, file, cb) => {
-                const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-                const ext = path.extname(file.originalname).toLowerCase() || '.jpg';
-                cb(null, `img-${uniqueSuffix}${ext}`);
-            },
-        }),
+        storage: (0, multer_1.memoryStorage)(),
         limits: {
             fileSize: 10 * 1024 * 1024,
         },
-        fileFilter: (req, file, cb) => {
+        fileFilter: (_req, file, cb) => {
             const allowedTypes = [
                 'image/jpeg',
                 'image/png',
@@ -68,7 +53,7 @@ __decorate([
     __param(0, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], UploadController.prototype, "uploadImage", null);
 exports.UploadController = UploadController = __decorate([
     (0, common_1.Controller)('upload'),
