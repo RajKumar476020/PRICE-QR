@@ -14,7 +14,7 @@ export declare class AnalyticsService {
         eventId: string;
     }>;
     getAnalytics(businessId: string, userId: string, period?: 'today' | '7d' | '30d'): Promise<{
-        period: "today" | "7d" | "30d";
+        period: "7d" | "today" | "30d";
         summary: {
             totalScans: number;
             totalAllTimeScans: number;

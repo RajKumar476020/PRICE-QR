@@ -25,15 +25,10 @@ export declare class AuthService {
             createdAt: Date;
         };
         businesses: ({
-            _count: {
-                categories: number;
-                products: number;
-                offers: number;
-            };
             hours: {
                 id: string;
-                dayOfWeek: number;
                 businessId: string;
+                dayOfWeek: number;
                 dayName: string;
                 openTime: string;
                 closeTime: string;
@@ -54,10 +49,15 @@ export declare class AuthService {
                 createdAt: Date;
                 updatedAt: Date;
                 status: string;
-                businessId: string;
                 planName: string;
                 expiresAt: Date | null;
                 features: string;
+                businessId: string;
+            };
+            _count: {
+                categories: number;
+                products: number;
+                offers: number;
             };
         } & {
             id: string;
@@ -92,15 +92,10 @@ export declare class AuthService {
         role: string;
         createdAt: Date;
         businesses: ({
-            _count: {
-                categories: number;
-                products: number;
-                offers: number;
-            };
             hours: {
                 id: string;
-                dayOfWeek: number;
                 businessId: string;
+                dayOfWeek: number;
                 dayName: string;
                 openTime: string;
                 closeTime: string;
@@ -121,10 +116,15 @@ export declare class AuthService {
                 createdAt: Date;
                 updatedAt: Date;
                 status: string;
-                businessId: string;
                 planName: string;
                 expiresAt: Date | null;
                 features: string;
+                businessId: string;
+            };
+            _count: {
+                categories: number;
+                products: number;
+                offers: number;
             };
         } & {
             id: string;

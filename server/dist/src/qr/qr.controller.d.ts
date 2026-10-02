@@ -16,22 +16,22 @@ export declare class QrController {
     }>;
     updateQrStyle(businessId: string, userId: string, qrStyle: any): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         businessId: string;
         targetUrl: string;
         qrStyle: string | null;
         downloadCount: number;
         scansCount: number;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     recordDownload(businessId: string, userId: string): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         businessId: string;
         targetUrl: string;
         qrStyle: string | null;
         downloadCount: number;
         scansCount: number;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
 }

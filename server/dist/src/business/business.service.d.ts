@@ -7,12 +7,12 @@ export declare class BusinessService {
     create(userId: string, dto: CreateBusinessDto): Promise<{
         hours: {
             id: string;
+            businessId: string;
             dayOfWeek: number;
             dayName: string;
             openTime: string;
             closeTime: string;
             isClosed: boolean;
-            businessId: string;
         }[];
         qrCode: {
             id: string;
@@ -26,18 +26,21 @@ export declare class BusinessService {
         };
         subscription: {
             id: string;
-            status: string;
             createdAt: Date;
             updatedAt: Date;
-            businessId: string;
+            status: string;
             planName: string;
             expiresAt: Date | null;
             features: string;
+            businessId: string;
         };
     } & {
         id: string;
-        publicId: string;
+        email: string | null;
         name: string;
+        createdAt: Date;
+        updatedAt: Date;
+        publicId: string;
         category: string;
         tagline: string | null;
         description: string | null;
@@ -45,7 +48,6 @@ export declare class BusinessService {
         coverUrl: string | null;
         phone: string | null;
         whatsapp: string | null;
-        email: string | null;
         website: string | null;
         address: string | null;
         city: string | null;
@@ -54,19 +56,17 @@ export declare class BusinessService {
         facebook: string | null;
         currency: string;
         status: string;
-        createdAt: Date;
-        updatedAt: Date;
         ownerId: string;
     }>;
     findByOwner(userId: string): Promise<({
         hours: {
             id: string;
+            businessId: string;
             dayOfWeek: number;
             dayName: string;
             openTime: string;
             closeTime: string;
             isClosed: boolean;
-            businessId: string;
         }[];
         qrCode: {
             id: string;
@@ -80,13 +80,13 @@ export declare class BusinessService {
         };
         subscription: {
             id: string;
-            status: string;
             createdAt: Date;
             updatedAt: Date;
-            businessId: string;
+            status: string;
             planName: string;
             expiresAt: Date | null;
             features: string;
+            businessId: string;
         };
         _count: {
             categories: number;
@@ -95,8 +95,11 @@ export declare class BusinessService {
         };
     } & {
         id: string;
-        publicId: string;
+        email: string | null;
         name: string;
+        createdAt: Date;
+        updatedAt: Date;
+        publicId: string;
         category: string;
         tagline: string | null;
         description: string | null;
@@ -104,7 +107,6 @@ export declare class BusinessService {
         coverUrl: string | null;
         phone: string | null;
         whatsapp: string | null;
-        email: string | null;
         website: string | null;
         address: string | null;
         city: string | null;
@@ -113,19 +115,17 @@ export declare class BusinessService {
         facebook: string | null;
         currency: string;
         status: string;
-        createdAt: Date;
-        updatedAt: Date;
         ownerId: string;
     })[]>;
     findById(id: string, userId: string): Promise<{
         hours: {
             id: string;
+            businessId: string;
             dayOfWeek: number;
             dayName: string;
             openTime: string;
             closeTime: string;
             isClosed: boolean;
-            businessId: string;
         }[];
         categories: ({
             _count: {
@@ -134,9 +134,9 @@ export declare class BusinessService {
         } & {
             id: string;
             name: string;
-            description: string | null;
             createdAt: Date;
             updatedAt: Date;
+            description: string | null;
             businessId: string;
             sortOrder: number;
             isActive: boolean;
@@ -153,13 +153,13 @@ export declare class BusinessService {
         };
         subscription: {
             id: string;
-            status: string;
             createdAt: Date;
             updatedAt: Date;
-            businessId: string;
+            status: string;
             planName: string;
             expiresAt: Date | null;
             features: string;
+            businessId: string;
         };
         _count: {
             products: number;
@@ -168,8 +168,11 @@ export declare class BusinessService {
         };
     } & {
         id: string;
-        publicId: string;
+        email: string | null;
         name: string;
+        createdAt: Date;
+        updatedAt: Date;
+        publicId: string;
         category: string;
         tagline: string | null;
         description: string | null;
@@ -177,7 +180,6 @@ export declare class BusinessService {
         coverUrl: string | null;
         phone: string | null;
         whatsapp: string | null;
-        email: string | null;
         website: string | null;
         address: string | null;
         city: string | null;
@@ -186,19 +188,17 @@ export declare class BusinessService {
         facebook: string | null;
         currency: string;
         status: string;
-        createdAt: Date;
-        updatedAt: Date;
         ownerId: string;
     }>;
     update(id: string, userId: string, dto: UpdateBusinessDto): Promise<{
         hours: {
             id: string;
+            businessId: string;
             dayOfWeek: number;
             dayName: string;
             openTime: string;
             closeTime: string;
             isClosed: boolean;
-            businessId: string;
         }[];
         qrCode: {
             id: string;
@@ -212,8 +212,11 @@ export declare class BusinessService {
         };
     } & {
         id: string;
-        publicId: string;
+        email: string | null;
         name: string;
+        createdAt: Date;
+        updatedAt: Date;
+        publicId: string;
         category: string;
         tagline: string | null;
         description: string | null;
@@ -221,7 +224,6 @@ export declare class BusinessService {
         coverUrl: string | null;
         phone: string | null;
         whatsapp: string | null;
-        email: string | null;
         website: string | null;
         address: string | null;
         city: string | null;
@@ -230,18 +232,16 @@ export declare class BusinessService {
         facebook: string | null;
         currency: string;
         status: string;
-        createdAt: Date;
-        updatedAt: Date;
         ownerId: string;
     }>;
     updateHours(id: string, userId: string, hours: BusinessHourItemDto[]): Promise<{
         id: string;
+        businessId: string;
         dayOfWeek: number;
         dayName: string;
         openTime: string;
         closeTime: string;
         isClosed: boolean;
-        businessId: string;
     }[]>;
     getSummary(id: string, userId: string): Promise<{
         business: {

@@ -26,8 +26,8 @@ export declare class PublicController {
         statusText: string;
         hours: {
             id: string;
-            dayOfWeek: number;
             businessId: string;
+            dayOfWeek: number;
             dayName: string;
             openTime: string;
             closeTime: string;
@@ -35,18 +35,18 @@ export declare class PublicController {
         }[];
         activeOffers: {
             id: string;
-            description: string | null;
             createdAt: Date;
             updatedAt: Date;
+            description: string | null;
             businessId: string;
+            isActive: boolean;
+            imageUrl: string | null;
             title: string;
             discountType: string;
             discountAmount: number | null;
             promoCode: string | null;
-            imageUrl: string | null;
             startDate: Date;
             endDate: Date;
-            isActive: boolean;
         }[];
     }>;
     getPublicMenu(publicId: string, search?: string, categoryId?: string): Promise<{
@@ -55,28 +55,28 @@ export declare class PublicController {
             products: {
                 id: string;
                 name: string;
-                description: string | null;
                 createdAt: Date;
                 updatedAt: Date;
+                description: string | null;
                 businessId: string;
-                imageUrl: string | null;
                 sortOrder: number;
-                categoryId: string;
-                isFeatured: boolean;
                 price: number;
                 discountPrice: number | null;
+                imageUrl: string | null;
                 isAvailable: boolean;
+                isFeatured: boolean;
                 dietaryType: string | null;
+                categoryId: string;
             }[];
         } & {
             id: string;
             name: string;
-            description: string | null;
             createdAt: Date;
             updatedAt: Date;
+            description: string | null;
             businessId: string;
-            isActive: boolean;
             sortOrder: number;
+            isActive: boolean;
         })[];
     }>;
 }
